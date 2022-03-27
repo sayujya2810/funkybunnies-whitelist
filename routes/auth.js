@@ -1,18 +1,26 @@
 const express = require('express')
 const router = express.Router()
+const { MerkleTree } = require('merkletreejs');
+const keccak256 = require('keccak256');
 
-const User = require('../models/User')
+const User = require('../models/User');
+const { db } = require('../models/User');
+var fs = require('fs')
+
 
 
 
 
 router.post('/adduser', (req,res) => {
+
+
     const {email, address} = req.body
 
     if(!email || !address){
         return res.status(422).json({error:"Please Enter all the creds"})
     }
 
+     
     User.findOne({email:email})
     .then((userExist) => {
         if(userExist){
@@ -28,14 +36,26 @@ router.post('/adduser', (req,res) => {
         })
 
     })
+
     .catch((err) => {
         console.log(err);
     })
+
+
+    
+
+    
+
+    
 
     
     // console.log({email, address})
     // res.json({message: {email, address}})
     // res.send("register page")
 })
+
+
+
+
 
 module.exports = router;
