@@ -43,23 +43,19 @@ const getrh=(whitelistAddresses)=>{
 
 
 router.get("/mint", (req,res) => {
+    
 
-    res.send("hereeeee")
 
-        // User.find({})
-        // .then(() => {
-        //         lists = []
-        //         getAddresses(lists)
-        //         console.log("AFter getAddress Function: ")
-        //         fs.writeFile("addressList.json", JSON.stringify(lists), (err)=>{
-        //             if(err){
-        //                 console.log(err)
-        //             }
-        //         })
-        //         console.log(lists)
-        //         // getrh(lists)
-        //         console.log("AFter getrh Function: ")
-        // })
+
+        User.find({})
+        .then(() => {
+                lists = []
+                getAddresses(lists)
+                console.log("AFter getAddress Function: ")
+                console.log(lists)
+                // getrh(lists)
+                console.log("AFter getrh Function: ")
+        })
             
 })
 

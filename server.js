@@ -12,7 +12,7 @@ const { db } = require('./models/User');
 app.use(express.static('public'))
 app.use(express.json())
 app.use(require('./routes/auth'))
-app.use(require('./routes/mint'))
+// app.use(require('./routes/mint'))
 app.use(cors)
 
 
