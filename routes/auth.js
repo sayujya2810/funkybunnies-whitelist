@@ -4,7 +4,7 @@ const { MerkleTree } = require('merkletreejs');
 const keccak256 = require('keccak256');
 
 const User = require('../models/User');
-const OgUser = require('../models/OgUser')
+// const OgUser = require('../models/OgUser')
 const { db } = require('../models/User');
 var fs = require('fs')
 
@@ -74,9 +74,9 @@ router.post('/adduser', async (req,res) => {
             return res.status(422).json({error:"User already Whitelisted"})
         }
 
-        const oguser = new OgUser({address:address, email:email})
+        const user = new User({address:address, email:email})
 
-        oguser.save().then(() => {
+        user.save().then(() => {
             res.status(201).json({message:"User Successfully Whitelisted"})
         }).catch((err) => {
             res.status(500).json({error:"Failed to whitelist"})
@@ -89,36 +89,36 @@ router.post('/adduser', async (req,res) => {
 
 })
 
-router.post('/addoguser', async (req,res) => {
+// router.post('/addoguser', async (req,res) => {
 
 
-    const {ogemail, ogaddress} = req.body
+//     const {ogemail, ogaddress} = req.body
 
-    console.log({ogaddress, ogemail})
+//     console.log({ogaddress, ogemail})
 
-    if(!ogemail || !ogaddress){
-        return res.status(422).json({error:"Please Enter all the creds"})
-    }
+//     if(!ogemail || !ogaddress){
+//         return res.status(422).json({error:"Please Enter all the creds"})
+//     }
 
      
-    OgUser.findOne({ogemail:ogemail})
-    .then((userExist) => {
-        if(userExist){
-            return res.status(422).json({error:"User already OG Whitelisted"})
-        }
+//     OgUser.findOne({ogemail:ogemail})
+//     .then((userExist) => {
+//         if(userExist){
+//             return res.status(422).json({error:"User already OG Whitelisted"})
+//         }
 
-        const ogUser = new OgUser({ogaddress:ogaddress, ogemail:ogemail})
+//         const ogUser = new OgUser({ogaddress:ogaddress, ogemail:ogemail})
 
-        ogUser.save().then(() => {
-            res.status(201).json({message:"User Successfully Whitelisted  OG"})
-        }).catch((err) => {
-            res.status(500).json({error:"Failed to whitelist OG"})
-        })
+//         ogUser.save().then(() => {
+//             res.status(201).json({message:"User Successfully Whitelisted  OG"})
+//         }).catch((err) => {
+//             res.status(500).json({error:"Failed to whitelist OG"})
+//         })
 
-    })
-    .catch((err) => {
-        console.log("err in whitelisting OG")
-    })
+//     })
+//     .catch((err) => {
+//         console.log("err in whitelisting OG")
+//     })
 
     
 
@@ -163,7 +163,7 @@ router.post('/addoguser', async (req,res) => {
     // console.log({email, address})
     // res.json({message: {email, address}})
     // res.send("register page")
-})
+// })
 
 
 
