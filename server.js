@@ -1,64 +1,88 @@
-const express = require('express')
-const app = express()
-require('dotenv').config()
+const express = require("express")
 const mongoose = require('mongoose')
-const User = require('./models/User')
 const cors = require('cors')
-const { db } = require('./models/User');
+require("dotenv").config()
+const path = require('path')
+// const favicon = require("serve-favicon")
+
+
+const userModel = require("./models/User")
+
+const app = express()
+const PORT = process.env.PORT || 5000
+
+const db = 'mongodb+srv://admin:admin1234@cluster0.dj88z.mongodb.net/funkybunnies?retryWrites=true&w=majority'
+// const db = process.env.MONGODB_URI
 
 
 
 
-app.use(express.static('public'))
+app.use(cors())
 app.use(express.json())
-app.use(require('./routes/auth'))
-// app.use(require('./routes/mint'))
-app.use(cors)
+app.use(express.static("public"))
 
 
-const database  = 'mongodb+srv://admin:admin1234@cluster0.dj88z.mongodb.net/funkybunnies?retryWrites=true&w=majority'
 
 
-// app.get('/find', async(req,res) => {
-    
-// })
+// Step 2
+mongoose.connect(db, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
 
-const getAddresses = (list) => {
-    db.collection('users').find({}).toArray((err, result) => {
-        if(err){
-            alert("Error Ocurred")
-        }
-        else{ 
-            result.map((r) => {
-                list.push(r['address'])
-            })
+mongoose.connection.on('connected', () => {
+    console.log('Mongoose is connected!!!!');
+});
 
-            console.log(list)
-        }
-    })
-}
-
+// app.use("/", require("./routes/routeAddress"))
 
 app.get('/', function(req,res) {
     res.sendFile(path.join(__dirname + "/public/index.html"))
 })
 
+app.post("/adduser", async (req,res) => {
 
-mongoose.connect( database ,{
-    useNewUrlParser: true,
-}).then(() => {
-    console.log("Connected to Mongoose Successfully")
-}).catch((err) => {
-    console.log(err)
+    const userAddress = req.body.address
+    const userEmail = req.body.email
+    // const userPhno = req.body.phno
+
+    userModel.findOne({address:userAddress})
+        .then((userExist) => {
+            if(userExist){
+                return res.status(422).json("Address Already Whitelisted")
+            }
+
+            const newUser = new userModel({
+                address:userAddress,
+                email: userEmail,
+            })
+            newUser.save()
+            res.send("Inserted")
+        })
+
+    
+    // console.log("Inserted data")
+})
+// app.get("/read", async (req,res) => {
+//     userModel.find()
+//     .then((foundUser) => {
+//         res.json(foundUser)
+//         console.log(foundUser)
+//         })
+// })
+app.get("/read", async (req,res) => {
+    userModel.find({}, (err, result) => {
+        if(err){
+            res.send(err)
+            // console.log(err)
+        }
+        else{
+            res.send(result)
+            // console.log("resuce",result)
+        }
+    })
 })
 
-
-
-
-app.listen(5000, ()=>{
-    // myList = []
-    // console.log("before: ", myList)
-    // getAddresses(myList)
-    // console.log("after: ", myList)
-    console.log("Listening to port 5000")
-})
+    app.listen(5000, ()=>{
+        console.log(`Connected to ${5000}`)
+    })
