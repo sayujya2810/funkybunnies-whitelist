@@ -11,9 +11,9 @@ const userModel = require("./models/User")
 const app = express()
 const PORT = process.env.PORT || 5000
 
-const db = 'mongodb+srv://admin:admin@cluster0.zkpnp.mongodb.net/myFirstDatabase?retryWrites=true&w=majority' // 4 addresses
+// const db = 'mongodb+srv://admin:admin@cluster0.zkpnp.mongodb.net/myFirstDatabase?retryWrites=true&w=majority' // 4 addresses
 // const db = 'mongodb+srv://admin:admin@cluster0.5ulko.mongodb.net/myFirstDatabase?retryWrites=true&w=majority' // 7 addresses
-// const db = 'mongodb+srv://admin:admin1234@cluster0.dj88z.mongodb.net/funkybunnies?retryWrites=true&w=majority' //original (700)
+const db = 'mongodb+srv://admin:admin1234@cluster0.dj88z.mongodb.net/funkybunnies?retryWrites=true&w=majority' //original (700)
 // const db = process.env.MONGODB_URI
 
 
